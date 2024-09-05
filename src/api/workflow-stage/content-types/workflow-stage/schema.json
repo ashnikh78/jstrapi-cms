@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "workflow_stages",
+  "info": {
+    "singularName": "workflow-stage",
+    "pluralName": "workflow-stages",
+    "displayName": "Workflow Stages"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

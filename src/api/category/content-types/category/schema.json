@@ -18,11 +18,11 @@
     "Description": {
       "type": "richtext"
     },
-    "post": {
+    "article": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::post.post",
-      "mappedBy": "category"
+      "relation": "manyToOne",
+      "target": "api::article.article",
+      "inversedBy": "categories"
     }
   }
 }

@@ -362,80 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
-  info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Name: Attribute.String & Attribute.Required;
-    Description: Attribute.RichText;
-    post: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'api::post.post'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiPostPost extends Schema.CollectionType {
-  collectionName: 'posts';
-  info: {
-    singularName: 'post';
-    pluralName: 'posts';
-    displayName: 'Post';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    slug: Attribute.String;
-    content: Attribute.Blocks & Attribute.Required;
-    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
-    created_date: Attribute.DateTime;
-    status: Attribute.Enumeration<
-      ['New', 'Draft', 'Published', 'Unpublished']
-    > &
-      Attribute.Required &
-      Attribute.DefaultTo<'New'>;
-    category: Attribute.Relation<
-      'api::post.post',
-      'oneToOne',
-      'api::category.category'
-    >;
-    admin_user: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -858,7 +784,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -887,6 +812,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    profilePicture: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -904,6 +830,234 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiArticleArticle extends Schema.CollectionType {
+  collectionName: 'articles';
+  info: {
+    singularName: 'article';
+    pluralName: 'articles';
+    displayName: 'Article';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    sections: Attribute.Relation<
+      'api::article.article',
+      'oneToMany',
+      'api::section.section'
+    >;
+    categories: Attribute.Relation<
+      'api::article.article',
+      'oneToMany',
+      'api::category.category'
+    >;
+    permalink: Attribute.UID;
+    ByLine: Attribute.Text;
+    source: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'api::source.source'
+    >;
+    admin_user: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'admin::user'
+    >;
+    description: Attribute.Blocks;
+    platforms: Attribute.Relation<
+      'api::article.article',
+      'oneToMany',
+      'api::platform.platform'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String & Attribute.Required;
+    Description: Attribute.RichText;
+    article: Attribute.Relation<
+      'api::category.category',
+      'manyToOne',
+      'api::article.article'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPlatformPlatform extends Schema.CollectionType {
+  collectionName: 'platforms';
+  info: {
+    singularName: 'platform';
+    pluralName: 'platforms';
+    displayName: 'platform';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String;
+    description: Attribute.Text;
+    article: Attribute.Relation<
+      'api::platform.platform',
+      'manyToOne',
+      'api::article.article'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::platform.platform',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::platform.platform',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSectionSection extends Schema.CollectionType {
+  collectionName: 'sections';
+  info: {
+    singularName: 'section';
+    pluralName: 'sections';
+    displayName: 'Section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String;
+    Description: Attribute.Text;
+    article: Attribute.Relation<
+      'api::section.section',
+      'manyToOne',
+      'api::article.article'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSourceSource extends Schema.CollectionType {
+  collectionName: 'sources';
+  info: {
+    singularName: 'source';
+    pluralName: 'sources';
+    displayName: 'Source';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String;
+    Description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::source.source',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::source.source',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiWorkflowStageWorkflowStage extends Schema.CollectionType {
+  collectionName: 'workflow_stages';
+  info: {
+    singularName: 'workflow-stage';
+    pluralName: 'workflow-stages';
+    displayName: 'Workflow Stages';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    order: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::workflow-stage.workflow-stage',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::workflow-stage.workflow-stage',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -914,8 +1068,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::category.category': ApiCategoryCategory;
-      'api::post.post': ApiPostPost;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -925,6 +1077,12 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::article.article': ApiArticleArticle;
+      'api::category.category': ApiCategoryCategory;
+      'api::platform.platform': ApiPlatformPlatform;
+      'api::section.section': ApiSectionSection;
+      'api::source.source': ApiSourceSource;
+      'api::workflow-stage.workflow-stage': ApiWorkflowStageWorkflowStage;
     }
   }
 }
