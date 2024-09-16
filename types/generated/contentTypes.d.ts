@@ -847,28 +847,35 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'oneToMany',
       'api::section.section'
     >;
-    categories: Attribute.Relation<
+    category: Attribute.Relation<
       'api::article.article',
-      'oneToMany',
-      'api::category.category'
+      'oneToOne',
+      'api::section.section'
     >;
-    permalink: Attribute.UID;
-    ByLine: Attribute.Text;
+    TitleofArticle: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 4;
+        maxLength: 250;
+      }>;
     source: Attribute.Relation<
       'api::article.article',
       'oneToOne',
       'api::source.source'
     >;
+    DescriptionDetails: Attribute.Blocks & Attribute.Required;
+    platform: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'api::platform.platform'
+    >;
+    Companies: Attribute.Text;
+    MutualFunds: Attribute.Text;
+    Tags: Attribute.Text & Attribute.Required;
     admin_user: Attribute.Relation<
       'api::article.article',
       'oneToOne',
       'admin::user'
-    >;
-    description: Attribute.Blocks;
-    platforms: Attribute.Relation<
-      'api::article.article',
-      'oneToMany',
-      'api::platform.platform'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -894,6 +901,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     singularName: 'category';
     pluralName: 'categories';
     displayName: 'Category';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -901,10 +909,10 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String & Attribute.Required;
     Description: Attribute.RichText;
-    article: Attribute.Relation<
+    category: Attribute.Relation<
       'api::category.category',
       'manyToOne',
-      'api::article.article'
+      'api::section.section'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -930,6 +938,7 @@ export interface ApiPlatformPlatform extends Schema.CollectionType {
     singularName: 'platform';
     pluralName: 'platforms';
     displayName: 'platform';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -937,11 +946,6 @@ export interface ApiPlatformPlatform extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     description: Attribute.Text;
-    article: Attribute.Relation<
-      'api::platform.platform',
-      'manyToOne',
-      'api::article.article'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -966,6 +970,7 @@ export interface ApiSectionSection extends Schema.CollectionType {
     singularName: 'section';
     pluralName: 'sections';
     displayName: 'Section';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -973,10 +978,15 @@ export interface ApiSectionSection extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Description: Attribute.Text;
-    article: Attribute.Relation<
+    category: Attribute.Relation<
       'api::section.section',
       'manyToOne',
       'api::article.article'
+    >;
+    sections: Attribute.Relation<
+      'api::section.section',
+      'oneToMany',
+      'api::category.category'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "category",
     "pluralName": "categories",
-    "displayName": "Category"
+    "displayName": "Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,11 +19,11 @@
     "Description": {
       "type": "richtext"
     },
-    "article": {
+    "category": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::article.article",
-      "inversedBy": "categories"
+      "target": "api::section.section",
+      "inversedBy": "sections"
     }
   }
 }

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "platform",
     "pluralName": "platforms",
-    "displayName": "platform"
+    "displayName": "platform",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,12 +17,6 @@
     },
     "description": {
       "type": "text"
-    },
-    "article": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::article.article",
-      "inversedBy": "platforms"
     }
   }
 }

@@ -16,38 +16,48 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::section.section",
-      "mappedBy": "article"
+      "mappedBy": "category"
     },
-    "categories": {
+    "category": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::category.category",
-      "mappedBy": "article"
+      "relation": "oneToOne",
+      "target": "api::section.section"
     },
-    "permalink": {
-      "type": "uid"
-    },
-    "ByLine": {
-      "type": "text"
+    "TitleofArticle": {
+      "type": "string",
+      "required": true,
+      "maxLength": 250,
+      "minLength": 4,
+      "unique": false
     },
     "source": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::source.source"
     },
+    "DescriptionDetails": {
+      "type": "blocks",
+      "required": true
+    },
+    "platform": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::platform.platform"
+    },
+    "Companies": {
+      "type": "text"
+    },
+    "MutualFunds": {
+      "type": "text"
+    },
+    "Tags": {
+      "type": "text",
+      "required": true
+    },
     "admin_user": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "admin::user"
-    },
-    "description": {
-      "type": "blocks"
-    },
-    "platforms": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::platform.platform",
-      "mappedBy": "article"
     }
   }
 }

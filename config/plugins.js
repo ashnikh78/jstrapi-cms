@@ -21,4 +21,8 @@ module.exports = {
       ],
     },
   },
+  "custom-dropdown": {
+    enabled: true,
+    resolve: './plugins/custom-dropdown',
+  },
 };
